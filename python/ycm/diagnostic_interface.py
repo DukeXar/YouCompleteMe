@@ -80,7 +80,7 @@ def _UpdateSquiggles( buffer_number_to_line_to_diags ):
       location_extent = diag[ 'location_extent' ]
       is_error = _DiagnosticIsError( diag )
 
-      if location_extent[ 'start' ][ 'line_num' ] < 0:
+      if location_extent[ 'start' ][ 'line_num' ] <= 0:
         location = diag[ 'location' ]
         vimsupport.AddDiagnosticSyntaxMatch(
             location[ 'line_num' ],
@@ -110,6 +110,8 @@ def _UpdateSigns( buffer_number_to_line_to_diags, next_sign_id ):
 
     vimsupport.UnplaceAllSignsInBuffer( buffer_number )
     for line, diags in line_to_diags.iteritems():
+      if line == 0:
+        continue
       for diag in diags:
         vimsupport.PlaceSign( next_sign_id,
                               line,
